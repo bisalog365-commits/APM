@@ -16511,37 +16511,28 @@ Func _GETADSPOWERCUSTOMNO ( $SUSERID )
         Return ""
 EndFunc
 Func _SEARCHCACHEFORSERIAL ( $SDATA , $SUSERID )
-        Local $AUIDKEYS [ 2 ] = [ "user_id" , "userid" ]
-        Local $ASNKEYS [ 4 ] = [ "serial_number" , "serialnumber" , "name" , "remark" ]
-        For $U = 0 To 1
-                For $S = 0 To 3
-                        ; Pattern A: user_id before serial field - quoted string value
-                        Local $ABLOCK = StringRegExp ( $SDATA , """" & $AUIDKEYS [ $U ] & """\s*:\s*""" & $SUSERID & """[^}]*""" & $ASNKEYS [ $S ] & """\s*:\s*""([^""]*)" , 1 )
-                        If Not @error Then
-                                Local $SRESULT = $ABLOCK [ 0 ]
-                                If $SRESULT <> "" And $SRESULT <> "null" And $SRESULT <> "0" Then Return $SRESULT
-                        EndIf
-                        ; Pattern B: serial field before user_id - quoted string value
-                        Local $ABLOCK2 = StringRegExp ( $SDATA , """" & $ASNKEYS [ $S ] & """\s*:\s*""([^""]*)""[^}]*""" & $AUIDKEYS [ $U ] & """\s*:\s*""" & $SUSERID & """" , 1 )
-                        If Not @error Then
-                                Local $SRESULT2 = $ABLOCK2 [ 0 ]
-                                If $SRESULT2 <> "" And $SRESULT2 <> "null" And $SRESULT2 <> "0" Then Return $SRESULT2
-                        EndIf
-                        ; Pattern C: user_id before serial field - UNQUOTED numeric value
-                        ; AdsPower returns serial_number as a plain integer e.g. "serial_number":13934
-                        Local $ABLOCK3 = StringRegExp ( $SDATA , """" & $AUIDKEYS [ $U ] & """\s*:\s*""" & $SUSERID & """[^}]*""" & $ASNKEYS [ $S ] & """\s*:\s*(\d+)" , 1 )
-                        If Not @error Then
-                                Local $SRESULT3 = $ABLOCK3 [ 0 ]
-                                If $SRESULT3 <> "" And $SRESULT3 <> "0" Then Return $SRESULT3
-                        EndIf
-                        ; Pattern D: serial field before user_id - UNQUOTED numeric value
-                        Local $ABLOCK4 = StringRegExp ( $SDATA , """" & $ASNKEYS [ $S ] & """\s*:\s*(\d+)[^}]*""" & $AUIDKEYS [ $U ] & """\s*:\s*""" & $SUSERID & """" , 1 )
-                        If Not @error Then
-                                Local $SRESULT4 = $ABLOCK4 [ 0 ]
-                                If $SRESULT4 <> "" And $SRESULT4 <> "0" Then Return $SRESULT4
-                        EndIf
-                Next
-        Next
+        ; Find the position of this user_id in the data
+        Local $IPOS = StringInStr ( $SDATA , '"user_id":"' & $SUSERID & '"' )
+        If $IPOS = 0 Then $IPOS = StringInStr ( $SDATA , '"user_id": "' & $SUSERID & '"' )
+        If $IPOS = 0 Then $IPOS = StringInStr ( $SDATA , '"userid":"' & $SUSERID & '"' )
+        If $IPOS = 0 Then $IPOS = StringInStr ( $SDATA , '"userid": "' & $SUSERID & '"' )
+        If $IPOS = 0 Then Return ""
+        ; Extract a 3000-char window centred on the match - avoids nested-brace regex failures
+        Local $ISTART = $IPOS - 1500
+        If $ISTART < 1 Then $ISTART = 1
+        Local $SCHUNK = StringMid ( $SDATA , $ISTART , 3000 )
+        ; 1. serial_number as plain integer  e.g. "serial_number":40400
+        Local $APAT = StringRegExp ( $SCHUNK , '"serial_number"\s*:\s*([1-9]\d*)' , 1 )
+        If Not @error Then Return $APAT [ 0 ]
+        ; 2. serial_number as quoted string  e.g. "serial_number":"40400"
+        $APAT = StringRegExp ( $SCHUNK , '"serial_number"\s*:\s*"([1-9][^"]*)"' , 1 )
+        If Not @error And $APAT [ 0 ] <> "" And $APAT [ 0 ] <> "null" Then Return $APAT [ 0 ]
+        ; 3. remark field containing a pure number
+        $APAT = StringRegExp ( $SCHUNK , '"remark"\s*:\s*"(\d+)"' , 1 )
+        If Not @error And Number ( $APAT [ 0 ] ) > 0 Then Return $APAT [ 0 ]
+        ; 4. name field containing a pure number (some accounts store custom no. here)
+        $APAT = StringRegExp ( $SCHUNK , '"name"\s*:\s*"(\d+)"' , 1 )
+        If Not @error And Number ( $APAT [ 0 ] ) > 0 Then Return $APAT [ 0 ]
         Return ""
 EndFunc
 Func _ADSFETCHDIRECT ( $SUSERID )
