@@ -16223,7 +16223,7 @@ Global $GBROWSERMOVEINPROGRESS = False
 Global $GSTOPURLLOOP = False
 Global $GSORTINGINPROGRESS = False
 GUICtrlCreateTabItem ( "" )
-GUICtrlCreateLabel ( "APM v" & $GAPMVERSION , 16 , 620 , 120 , 15 )
+GUICtrlCreateLabel ( "Dev ChingChing" , 16 , 620 , 120 , 15 )
 GUICtrlSetFont ( - 1 , 7 , 400 , 0 , "Arial" )
 GUICtrlSetColor ( - 1 , 8947848 )
 GUICtrlSetResizing ( - 1 , $GUI_DOCKBOTTOM + $GUI_DOCKWIDTH + $GUI_DOCKHEIGHT )
