@@ -16247,6 +16247,7 @@ GUIRegisterMsg ( $WM_GETMINMAXINFO , "_WM_GETMINMAXINFO" )
 GUIRegisterMsg ( $WM_NOTIFY , "WM_NOTIFY" )
 _GUICTRLLISTVIEW_REGISTERSORTCALLBACK ( $LISTVIEW1 , 2 )
 Global $HDLL = DllOpen ( "user32.dll" )
+_REFRESHADSCACHE ( )
 AdlibRegister ( "_FocusList" , 300 )
 AdlibRegister ( "GetBrowsers" , 1000 )
 AdlibRegister ( "ListViewColotBlink" , 1000 )
@@ -16270,7 +16271,6 @@ If $GALLHOTKEYSON Then
         HOTKEYSSET ( )
         HOTKEYS2SET ( )
 EndIf
-_REFRESHADSCACHE ( )
 While 1
         _SLEEP ( 50 )
 WEnd
