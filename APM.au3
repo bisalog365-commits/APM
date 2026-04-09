@@ -16263,6 +16263,19 @@ _GUIIMAGELIST_ADD ( $HIMAGE , _GUICTRLLISTVIEW_CREATESOLIDBITMAP ( $LISTVIEW1 , 
 _GUIIMAGELIST_ADD ( $HIMAGE , _GUICTRLLISTVIEW_CREATESOLIDBITMAP ( $LISTVIEW1 , 16711680 , 16 , 16 ) )
 _GUICTRLLISTVIEW_SETIMAGELIST ( $LISTVIEW1 , $HIMAGE , 1 )
 _CHECKFORUPDATE ( )
+; Pre-fetch custom numbers for all already-open AdsPower windows
+; so they display instantly when GetBrowsers first runs
+Local $APREFETCH = WinList ( "[CLASS:Chrome_WidgetWin_1]" )
+If IsArray ( $APREFETCH ) Then
+        For $PF = 1 To $APREFETCH [ 0 ] [ 0 ]
+                If Not BitAND ( WinGetState ( $APREFETCH [ $PF ] [ 1 ] ) , 2 ) Then ContinueLoop
+                Local $PFUID = _GETADSPOWERUSERID ( $APREFETCH [ $PF ] [ 1 ] )
+                If $PFUID = "" Then ContinueLoop
+                ; Only fetch direct if not already resolved by bulk cache
+                Local $PFCUSTOM = _SEARCHCACHEFORSERIAL ( $GADSCACHE , $PFUID )
+                If $PFCUSTOM = "" Then _ADSFETCHDIRECT ( $PFUID )
+        Next
+EndIf
 GUISetState ( @SW_SHOW )
 GUISETPOS ( )
 GUISETONTOP ( )
@@ -16441,7 +16454,7 @@ Func _ADSFETCHPAGE ( $IPAGE , $SAPIKEY )
                 Local $SURL = "http://" & $AHOSTS [ $H ] & ":50325/api/v1/user/list?page=" & $IPAGE & "&page_size=100"
                 If $SAPIKEY <> "" Then $SURL &= "&api_key=" & $SAPIKEY
                 $OHTTP .Open ( "GET" , $SURL , False )
-                $OHTTP .SetTimeouts ( 500 , 500 , 500 , 1000 )
+                $OHTTP .SetTimeouts ( 2000 , 2000 , 2000 , 3000 )
                 $OHTTP .Send ( )
                 If $OHTTP .Status = 200 Then
                         Local $SRESP = $OHTTP .ResponseText
