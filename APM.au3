@@ -15956,7 +15956,7 @@ Global Const $STM_SETICON = 368
 Global Const $STM_GETICON = 369
 Global Const $STM_SETIMAGE = 370
 Global Const $STM_GETIMAGE = 371
-Global Const $GAPMVERSION = "1"
+Global Const $GAPMVERSION = "5.5"
 Global $GDIRROOT = @ScriptDir & "\APManagerData\"
 Global $GCFGINI = $GDIRROOT & "config.ini"
 DirCreate ( $GDIRROOT )
