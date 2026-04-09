@@ -16027,10 +16027,6 @@ $BUTTONMAINRESIZE = GUICtrlCreateButton ( "Apply" , 284 , 510 , 59 , 22 )
 GUICtrlSetResizing ( - 1 , $GUI_DOCKTOP + $GUI_DOCKWIDTH + $GUI_DOCKHEIGHT )
 $BUTTONFIXSIZE = GUICtrlCreateButton ( "Fix" , 284 , 534 , 59 , 22 )
 GUICtrlSetResizing ( - 1 , $GUI_DOCKTOP + $GUI_DOCKWIDTH + $GUI_DOCKHEIGHT )
-$BUTTONTMTLITE = GUICtrlCreateButton ( "TM Lite" , 284 , 560 , 59 , 25 )
-GUICtrlSetResizing ( - 1 , $GUI_DOCKTOP + $GUI_DOCKWIDTH + $GUI_DOCKHEIGHT )
-GUICtrlSetBkColor ( - 1 , 43520 )
-GUICtrlSetColor ( - 1 , 16777215 )
 $BUTTONMOVEBACK = GUICtrlCreateButton ( "<<<" , 24 , 40 , 75 , 25 )
 GUICtrlSetResizing ( - 1 , $GUI_DOCKTOP + $GUI_DOCKWIDTH + $GUI_DOCKHEIGHT )
 $BUTTONMOVEFWD = GUICtrlCreateButton ( ">>>" , 192 , 40 , 75 , 25 )
@@ -16907,8 +16903,6 @@ Func GUICHECKCONTROLS ( )
                 OPENURLALLMAIN ( )
         Case $BUTTONMAINSTOPURL
                 $GSTOPURLLOOP = True
-        Case $BUTTONTMTLITE
-                TMLITEALL ( )
 Case Else
                 Local $BMAINGROUPCLICKED = False
                 For $IMG = 0 To 25
