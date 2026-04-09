@@ -16274,7 +16274,6 @@ If $GALLHOTKEYSON Then
         HOTKEYS2SET ( )
 EndIf
 _REFRESHADSCACHE ( )
-_CHECKFORUPDATE ( )
 While 1
         _SLEEP ( 50 )
 WEnd
@@ -16785,6 +16784,7 @@ Func GUICHECKCONTROLS ( )
                 DllClose ( $HDLL )
                 _GUICTRLLISTVIEW_UNREGISTERSORTCALLBACK ( $LISTVIEW1 )
                 GUIDelete ( $GGUIMAIN )
+                _CHECKFORUPDATE ( )
                 Exit
         Case $LISTVIEW1
                 $SCLICKEDCOLUMN = GUICtrlGetState ( $LISTVIEW1 )
