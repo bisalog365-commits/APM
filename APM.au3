@@ -15988,7 +15988,7 @@ Opt ( "WinWaitDelay" , 10 )
 Opt ( "WinTitleMatchMode" , 4 )
 _SHOWSPLASHSCREEN ( )
 #Region ### START Koda GUI section ### Form=m:\dropbox\upwork\multilogin browser manager\form1.kxf
-$GGUIMAIN = GUICreate ( "AdsPower Window Manager v" & $GAPMVERSION & " - Dev Chingc" , 358 , 680 , 920 , 180 , BitOR ( $GUI_SS_DEFAULT_GUI , $WS_SIZEBOX , $WS_THICKFRAME ) )
+$GGUIMAIN = GUICreate ( "APM V" & $GAPMVERSION & " Nickets" , 358 , 680 , 920 , 180 , BitOR ( $GUI_SS_DEFAULT_GUI , $WS_SIZEBOX , $WS_THICKFRAME ) )
 $MAIN = GUICtrlCreateTab ( 8 , 8 , 345 , 609 )
 GUICtrlSetResizing ( - 1 , $GUI_DOCKLEFT + $GUI_DOCKRIGHT + $GUI_DOCKTOP + $GUI_DOCKBOTTOM )
 $TABSHEET1 = GUICtrlCreateTabItem ( "Main" )
